@@ -6,10 +6,13 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
                         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
+<context:property-placeholder location="classpath:/application.properties"/>
 
-<import resource="/spring-beans.xml"/>
+	<context:component-scan base-package="com.pkrm.controller"/>
+	<context:component-scan base-package="com.pkrm.service"/>
+	<context:component-scan base-package="com.pkrm.repository">
+		<context:exclude-filter type="regex" expression="com.pkrm.repository.stub"/>
+	</context:component-scan>
+	<context:component-scan base-package="com.pkrm.configuration"/>
 
-<import resource="/json-resolvers.xml"/> 	
-
-                        
-</beans>                        
+</beans>	

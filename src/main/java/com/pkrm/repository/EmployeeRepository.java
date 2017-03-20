@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.pkrm.domain.Employee;
+import com.pkrm.exception.DataAccessException;
 
 @Repository
 public class EmployeeRepository implements IEmployeeRepository{
@@ -16,15 +17,26 @@ public class EmployeeRepository implements IEmployeeRepository{
 
 	@Override
 	public String save(Employee employee) {
-		mongoTemplate.save(employee);
+		try{
+			mongoTemplate.save(employee);
+		} catch(Exception e) {
+			throw new DataAccessException(e.getMessage(), e);
+		}
+			
 		return "employee details are saved";
 	}
 
 	@Override
 	public Employee getEmployee(String empId) {
-		Query query = new Query();
-		query.addCriteria(new Criteria().and("_id").is(empId));
-		return mongoTemplate.findOne(query, Employee.class);
+		Employee employee = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(new Criteria().and("_id").is(empId));
+			employee = mongoTemplate.findOne(query, Employee.class);
+		} catch(Exception e) {
+			throw new DataAccessException(e.getMessage(), e);
+		}
+		return employee;
 	}
 
 }

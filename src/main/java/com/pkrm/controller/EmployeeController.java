@@ -1,5 +1,7 @@
 package com.pkrm.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,8 @@ public class EmployeeController {
 			response = employeeService.save(employee);
 		} catch (InvalidInputException e) {
 			return new ResponseEntity<String>(e.getMessage() + "empId, empName and atlease one address is allowed",HttpStatus.BAD_REQUEST);
+		} catch(Exception e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
  		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
@@ -35,7 +39,10 @@ public class EmployeeController {
 	@RequestMapping(value="get-employee/{emp-id}", method=RequestMethod.GET)
 	public ResponseEntity<?> getEmployee(@PathVariable(value="emp-id") String empId) {
 		Employee employee = employeeService.getEmployee(empId);
-		return null;
+		if(! Optional.ofNullable(employee).isPresent()) {
+			return new ResponseEntity<String>("employee is not present in DB ", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="getEmployees", method=RequestMethod.GET)
