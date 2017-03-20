@@ -1,52 +1,18 @@
 package com.pkrm.configuration;
 
 import java.net.UnknownHostException;
-import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
 import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 @Configuration
 public class MongoConfiguration {
 	
-	@Value("${mongo.host}")
-	private String host;
-	
-	@Value("${mongo.port}")
-	private String port;
-	
-	@Value("${mongo.database}")
-	private String dbName;
-	
-	@Bean
-	public MongoTemplate mongoTemplate() {
-		return new MongoTemplate(mongoDBFactory());
-	}
-
-	private MongoDbFactory mongoDBFactory() {
-		 MongoCredential credential = MongoCredential.createCredential("", dbName, "".toCharArray());
-		    ServerAddress serverAddress = new ServerAddress(host, Integer.valueOf(port));
-
-		    // Mongo Client
-		    MongoClient mongoClient = new MongoClient(serverAddress,Arrays.asList(credential)); 
-
-		    // Mongo DB Factory
-		    SimpleMongoDbFactory simpleMongoDbFactory = new SimpleMongoDbFactory(mongoClient, dbName);
-
-		    return simpleMongoDbFactory;
-	}
-	
-	
-	/*
 	private static final int CONNECTION_PER_HOST = 5;
 	private static final int SOCKET_TIMEOUT = 15000;
 	private static final int W_TIMEOUT = 5000;
@@ -83,7 +49,8 @@ public class MongoConfiguration {
 	public MongoTemplate getMongoTemplate(Mongo mongo) {
 		return new MongoTemplate(mongo, dbName);
 		
-	}*/
+	}
+	
 }
 	
 

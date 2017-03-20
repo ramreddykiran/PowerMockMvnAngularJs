@@ -6,4 +6,6 @@ public interface IEmployeeRepository {
 
 	String save(Employee employee);
 
+	Employee getEmployee(String empId);
+
 }

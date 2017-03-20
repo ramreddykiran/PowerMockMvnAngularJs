@@ -27,4 +27,8 @@ public class EmployeeService {
 		}
 	}
 
+	public Employee getEmployee(String empId) {
+		return employeeRepository.getEmployee(empId);
+	}
+
 }

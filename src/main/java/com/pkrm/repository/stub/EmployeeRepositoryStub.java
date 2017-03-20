@@ -13,4 +13,9 @@ public class EmployeeRepositoryStub implements IEmployeeRepository{
 		return null;
 	}
 
+	@Override
+	public Employee getEmployee(String empId) {
+		return null;
+	}
+
 }

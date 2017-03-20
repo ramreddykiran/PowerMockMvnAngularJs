@@ -6,5 +6,78 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
                         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
+
+	<context:property-placeholder location="classpath:/application.properties"/>
+
+<context:component-scan base-package="com.pkrm.controller"/>
+<context:component-scan base-package="com.pkrm.service"/>
+<context:component-scan base-package="com.pkrm.repository">
+	<context:exclude-filter type="regex" expression="com.pkrm.repository.stub"/>
+</context:component-scan>
+<context:component-scan base-package="com.pkrm.configuration"/>
+
+   <bean id="jacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+	
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="jacksonObjectMapper" />
+		<property name="targetMethod" value="configure" />
+		<property name="arguments">
+			<list>
+				<value type="org.codehaus.jackson.map.DeserializationConfig.Feature">FAIL_ON_UNKNOWN_PROPERTIES</value>
+				<value>false</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jsonConverter"
+	class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes" value="application/json" />
+		<property name="objectMapper" ref="jacksonObjectMapper" />
+	</bean>
+	
+	 <bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+           <property name = "supportedMediaTypes" value="text/plain;charset=UTF-8 "/>
+       </bean>
+       
+
+	<bean id="annotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+    
+	
+	
+    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+    	<property name="supportedMediaTypes" value="application/json" />
+		<property name="objectMapper" ref="jacksonObjectMapper" />
+	</bean>
+    	
+
+	
+
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+			</list>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+			</list>
+		</property>
+   	</bean>
+	
                         
 </beans>                        
