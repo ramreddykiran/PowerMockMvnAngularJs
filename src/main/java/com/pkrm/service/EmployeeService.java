@@ -1,5 +1,7 @@
 package com.pkrm.service;
 
+import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,14 @@ public class EmployeeService {
 
 	public Employee getEmployee(String empId) {
 		return employeeRepository.getEmployee(empId);
+	}
+
+	public List<Employee> getEmployees(String empName) {
+		if(StringUtils.isNotBlank(empName)) {
+			return employeeRepository.getEmployees(empName);
+		} else {
+			return employeeRepository.getEmployees();
+		}
 	}
 
 }
