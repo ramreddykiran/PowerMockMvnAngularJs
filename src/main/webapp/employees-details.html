@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<style> input.ng-invalid {background-color:lightblue;}
+table td,th{
+    font-family: arial, sans-serif;
+   	border:1px solid black;
+	border-collapse:collapse;
+	padding:5px;
+    width: 100%;
+}
+table tr:nth-child(odd){
+	background-color:#f1f1f1;
+}			
+ table tr:nth-child(even) {
+	background-color:#ffffff;
+}		
+</style>
+</head>
+<body>
+<div ng-app="employeeApp" ng-controller="empController">
+    First Name: <input type="text" ng-model="empname" required> <br><br>
+    <input type="button" value="getemployees" ng-click="getEmployees()" ng-disabled="!empname"></button>
+  <!-- <h1>You entered: {{empname}}</h1> 
+  <p>{{url}}</p>-->
+  <table>
+  <tr ng-repeat="emp in employees">
+  <td>{{emp.empId}}</td><td>{{emp.empName}}</td><td>{{emp.addresses}}</td>
+  </tr>
+  </table><br>
+  {{statusMessage}}
+  </div>
+
+  <script src="js/employeedetails.js"> </script>
+</body>
+</html>
